@@ -13,9 +13,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<Usuario> {
-    // Crea una nueva instancia del usuario
     const newUser = this.userRepository.create(createUserDto);
-    // Guarda el usuario en la base de datos
     return await this.userRepository.save(newUser);
   }
 
