@@ -5,8 +5,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Usuario } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { error } from 'console';
-import { throwError } from 'rxjs';
 
 @Injectable()
 export class UsersService {
@@ -45,21 +43,30 @@ export class UsersService {
     return this.findOne(id);
   }
 
-  async login(email : string, password : string): Promise<Usuario>|null {
-    console.log(email, password)
-    const user = await this.userRepository.findOne({where: {email}})
-    console.log(user.email, user.password)
-       if (!user){
-       throw new Error("El usuario no existe")
+  async login(usuario: Usuario): Promise<Usuario | null> {
+
+    if (typeof usuario.email !== 'string' || typeof usuario.password !== 'string') {
+      throw new Error("El email y la contraseña deben ser cadenas de texto.");
     }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if(!isPasswordValid){
-      throw new Error("Contraseña incorrecta")
+  
+    // Buscar usuario por email
+    const user = await this.userRepository.findOne({ where: { email : usuario.email } }); // Usa el email recibido como argumento
+    console.log("Usuario encontrado:", user);
+  
+    // Verificar si el usuario existe
+    if (!user) {
+      throw new Error("El usuario no existe");
     }
-
-    return user
+  
+    // Validar la contraseña usando bcrypt
+    const isPasswordValid = await bcrypt.compare(usuario.password, user.password); // user.password es el hash guardado
+  
+    if (!isPasswordValid) {
+      throw new Error("Contraseña incorrecta");
+    }
+  
+    // Devolver el usuario si todo es válido
+    return user;
   }
 
   async remove(id: number): Promise<void> {

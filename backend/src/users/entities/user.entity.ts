@@ -15,12 +15,10 @@ export class Usuario {
   @Column({ length: 255 })
   password: string;
 
-  @Column({ default: 0 })
-  points: number;
-
-  @Column({ default: 0 })
-  scrims: number;
-
-  @Column({ default: 0 })
-  duelos: number;
+  @Column({ type: 'jsonb', nullable: true }) // Cambiar el tipo a jsonb
+  stats: {
+    points: number;
+    scrimsW: number;
+    duelsW: number;
+  };
 }
