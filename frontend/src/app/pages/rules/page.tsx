@@ -1,5 +1,5 @@
 import Navbar from "@/app/components/navbar";
-import background from "@/../public/homepage.webp"; // Asegúrate de que la ruta sea correcta
+import background from "@/../public/rules.jpg"; // Asegúrate de que la ruta sea correcta
 
 export default function Homepage() {
   return (
