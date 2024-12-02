@@ -8,8 +8,8 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-row justify-center bg-[#3550FF] w-[100vw] h-[10vh] fixed text-white shadow-xl shadow-black">
-      <Stack direction="row" spacing={2}>
+    <div className="flex flex-row justify-center bg-[#f12727] w-[100vw] h-[7vh] fixed text-white shadow-xl shadow-black">
+      <Stack direction="row" spacing={4}>
         <Button sx={{color:'black'}} onClick={()=> {router.push("/pages/homepage")}}>Home</Button>
         <Button sx={{color:'black'}} onClick={()=> {router.push("/pages/profile")}}>Profile</Button>
         <Button sx={{color:'black'}} onClick={()=> {router.push("/pages/ranking")}}>Ranking</Button>
