@@ -6,11 +6,10 @@ async function bootstrap() {
 
   app.enableCors({
     origin: (origin, callback) => {
-      if (!origin || /^https:\/\/.*\.vercel\.app$/.test(origin)) {
-        // Permite solicitudes desde cualquier subdominio de vercel.app
+      // Permitir cualquier subdominio de Vercel o localhost para desarrollo
+      if (!origin || /^https:\/\/scrims-rank-.*\.alejoborracci21s-projects\.vercel\.app$/.test(origin) || origin === 'http://localhost:3000') {
         callback(null, true);
       } else {
-        // Bloquea cualquier otro origen
         callback(new Error('Not allowed by CORS'));
       }
     },
