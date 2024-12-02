@@ -5,9 +5,17 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://scrims-rank-d3fnriu4p-alejoborracci21s-projects.vercel.app', // Permitir solicitudes desde el frontend
-    methods: 'GET,POST,PUT,DELETE,OPTIONS', // Métodos HTTP permitidos
-    credentials: true, // Permitir cookies o encabezados con credenciales
+    origin: (origin, callback) => {
+      if (!origin || /^https:\/\/.*\.vercel\.app$/.test(origin)) {
+        // Permite solicitudes desde cualquier subdominio de vercel.app
+        callback(null, true);
+      } else {
+        // Bloquea cualquier otro origen
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    credentials: true,
   });
   
   await app.listen(process.env.DB_PORT ?? 3000);
