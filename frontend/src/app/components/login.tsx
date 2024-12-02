@@ -76,7 +76,6 @@ const Login = () => {
         </h2>
         {error && <p className="mb-4 text-center text-red-500">{error}</p>}
 
-        {/* Inputs comunes */}
         <div className="mb-4">
           <label
             htmlFor="email"
