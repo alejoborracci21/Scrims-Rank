@@ -9,6 +9,9 @@ export class Usuario {
   @Column({ length: 100 })
   name: string;
 
+  @Column()
+  nickname: string;
+
   @Column({ length: 255, unique: true })
   email: string;
 
