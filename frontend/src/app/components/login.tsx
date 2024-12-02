@@ -4,12 +4,17 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const Login = () => {
-  const [isRegistering, setIsRegistering] = useState(false); // Estado para alternar entre login y registro
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [summonerName, setSummonerName] = useState('');
-  const [error, setError] = useState('');
+  //Alternar entre login y registro
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
+
+  //Credenciales del usuario
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [nickname, setNickName] = useState<string>('');
+  const [error, setError] = useState<string>('');
+
+  //Navegacion
   const router = useRouter();
 
   const handleSubmitLogin = async (e: React.FormEvent) => {
@@ -42,10 +47,10 @@ const Login = () => {
   const handleSubmitRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newUser = { email, password, name, summonerName };
+    const newUser = { email, password, name, nickname };
 
     try {
-      const response = await fetch('https://scrims-rank.onrender.com/users/register', {
+      const response = await fetch('https://scrims-rank.onrender.com/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +62,6 @@ const Login = () => {
         throw new Error('Error al registrar usuario');
       }
 
-      const data = await response.json();
       alert('Usuario registrado exitosamente');
       setIsRegistering(false); // Regresar al formulario de login
     } catch (err: any) {
@@ -139,8 +143,8 @@ const Login = () => {
               <input
                 type="text"
                 id="summonerName"
-                value={summonerName}
-                onChange={(e) => setSummonerName(e.target.value)}
+                value={nickname}
+                onChange={(e) => setNickName(e.target.value)}
                 required
                 className="w-full px-4 py-2 border text-black border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
