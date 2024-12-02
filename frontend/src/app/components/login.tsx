@@ -39,8 +39,12 @@ const Login = () => {
       localStorage.setItem('token', data.token);
 
       router.push('/pages/homepage');
-    } catch (err: any) {
-      setError(err.message || 'Error al iniciar sesión');
+    } catch (err: unknown) { 
+      if (err instanceof Error) {
+        setError(err.message || 'Error al iniciar sesión');
+      } else {
+        setError('Error desconocido');
+      }
     }
   };
 
@@ -64,8 +68,12 @@ const Login = () => {
 
       alert('Usuario registrado exitosamente');
       setIsRegistering(false); // Regresar al formulario de login
-    } catch (err: any) {
-      setError(err.message || 'Error al registrar usuario');
+    } catch (err: unknown) {
+      if(err instanceof Error){
+        setError(err.message || 'Error al registrar usuario');
+      }else{
+        return ("Error desconocido")
+      }
     }
   };
 
