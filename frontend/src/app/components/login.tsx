@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import background from "@/../public/login.webp"; // Asegúrate de que la ruta sea correcta
 
 const Login = () => {
   //Alternar entre login y registro
@@ -37,6 +38,8 @@ const Login = () => {
 
       const data = await response.json();
       localStorage.setItem('token', data.token);
+      console.log(data)
+      localStorage.setItem('user', data.id);
 
       router.push('/pages/homepage');
     } catch (err: unknown) { 
@@ -78,10 +81,14 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-500">
+    <div className="flex items-center justify-center min-h-screen" style={{
+      backgroundImage: `url(${background.src})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}>
       <form
         onSubmit={isRegistering ? handleSubmitRegister : handleSubmitLogin}
-        className="w-full max-w-md bg-white p-8 rounded shadow-md"
+        className="w-full max-w-md bg-white p-8 rounded shadow-2xl shadow-black"
       >
         <h2 className="text-2xl font-bold text-center text-black mb-6">
           {isRegistering ? 'Registrarse' : 'Iniciar Sesión'}
@@ -101,7 +108,8 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 border text-black border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+            className="w-full px-4 py-2 border text-black border-black rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -118,7 +126,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 border text-black border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border text-black border-black rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -164,7 +172,7 @@ const Login = () => {
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none"
         >
-          {isRegistering ? 'Registrar' : 'Entrar'}
+          {isRegistering ? 'Register' : 'Login'}
         </button>
 
         <button
@@ -172,7 +180,7 @@ const Login = () => {
           onClick={() => setIsRegistering(!isRegistering)}
           className="w-full bg-red-700 mt-2 text-white py-2 rounded hover:bg-red-800 focus:outline-none"
         >
-          {isRegistering ? 'Volver a Iniciar Sesión' : 'Registrarse'}
+          {isRegistering ? 'Login' : 'Register'}
         </button>
       </form>
     </div>

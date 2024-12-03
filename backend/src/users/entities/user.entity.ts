@@ -18,10 +18,16 @@ export class Usuario {
   @Column({ length: 255 })
   password: string;
 
-  @Column({ type: 'jsonb', nullable: true }) // Cambiar el tipo a jsonb
-  stats: {
-    points: number;
-    scrimsW: number;
-    duelsW: number;
-  };
+  @Column()
+  scrims: number;
+
+  @Column()
+  duels: number;
+
+  @Column()
+  points: number;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  image: string | null; 
+ 
 }
