@@ -3,4 +3,8 @@ export class CreateUserDto {
   nickname: string;
   email: string;
   password: string;
+  image: string;
+  scrims: number;
+  duels: number;
+  points: number;
 }

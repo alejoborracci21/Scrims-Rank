@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Usuario } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { error } from 'console';
 
 @Injectable()
 export class UsersService {
@@ -15,17 +16,22 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<Usuario> {
 
+
+    const email = await this.userRepository.findOne({where: {email: createUserDto.email}})
+    const nick = await this.userRepository.findOne({where: {nickname: createUserDto.nickname}})
+
+    if(email || nick) throw new error ("User already exist");
+    
+
     const saltRounds = 10; // Número de rondas de sal
 
     // Encriptar la contraseña
     try {
         createUserDto.password = await bcrypt.hash(createUserDto.password, saltRounds);
     } catch (err) {
-        console.error('Error encriptando la contraseña:', err);
         throw new Error('Error encriptando la contraseña');
     }
 
-    // Crear y guardar el usuario
     const newUser = this.userRepository.create(createUserDto);
     return await this.userRepository.save(newUser);
   }
@@ -51,7 +57,6 @@ export class UsersService {
   
     // Buscar usuario por email
     const user = await this.userRepository.findOne({ where: { email : usuario.email } }); // Usa el email recibido como argumento
-    console.log("Usuario encontrado:", user);
   
     // Verificar si el usuario existe
     if (!user) {
