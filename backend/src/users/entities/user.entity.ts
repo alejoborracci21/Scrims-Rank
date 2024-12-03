@@ -18,13 +18,13 @@ export class Usuario {
   @Column({ length: 255 })
   password: string;
 
-  @Column()
+  @Column({nullable: true})
   scrims: number;
 
-  @Column()
+  @Column({nullable: true})
   duels: number;
 
-  @Column()
+  @Column({nullable: true})
   points: number;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
