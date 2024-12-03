@@ -33,7 +33,8 @@ export default function Homepage() {
       // Ordenar usuarios por puntos de mayor a menor
       const sortedUsers = data.sort((a, b) => b.points - a.points);
       setUsers(sortedUsers);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if(error instanceof Error)
       setError(error.message || "Error desconocido.");
     } finally {
       setLoading(false);
