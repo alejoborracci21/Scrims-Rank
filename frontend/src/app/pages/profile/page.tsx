@@ -10,7 +10,9 @@ interface User {
   name: string;
   nickname: string;
   email: string;
-  stats: Record<string, any>;
+  scrims: number;
+  duels: number;
+  points: number;
 }
 
 export default function Homepage() {
@@ -66,7 +68,9 @@ export default function Homepage() {
             <>
               <h1 className="text-2xl font-bold">{user.name}</h1>
               <h2 className="text-xl">{user.nickname}</h2>
-              <p>Otros datos: {JSON.stringify(user.stats)}</p>
+              <p>${user.duels}</p>
+              <p>${user.points}</p>
+              <p>${user.scrims}</p>
             </>
           ) : (
             <h1>Cargando datos del usuario...</h1>
