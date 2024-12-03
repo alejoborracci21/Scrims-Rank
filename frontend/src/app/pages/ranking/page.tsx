@@ -56,7 +56,7 @@ export default function Homepage() {
           backgroundPosition: "center",
         }}
       >
-        <div className="flex flex-col text-black bg-white bg-opacity-90 w-[80%] mx-auto mt-14 p-5 rounded shadow-lg">
+        <div className="flex flex-col text-black bg-white bg-opacity-80 w-[80%] mx-auto mt-[10%] p-5 rounded shadow-[0_4px_10px_rgba(0,0,0,0.5)] shadow-black">
           <h1 className="text-2xl font-bold mb-4 text-center">
             Top ranking
           </h1>
