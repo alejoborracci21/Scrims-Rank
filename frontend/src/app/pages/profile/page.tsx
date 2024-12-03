@@ -3,6 +3,7 @@
 import Navbar from "@/app/components/navbar";
 import background from "@/../public/profile.jpg";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 // Definimos la estructura del usuario, incluyendo stats como un objeto JSON
 interface User {
@@ -67,7 +68,7 @@ export default function Homepage() {
             <h1 className="text-red-500">{error}</h1>
           ) : user ? (
             <div className="flex flex-col items-center justify-center bg-transparent">
-                <img
+                <Image
                 src={user.image}
                 alt="Profile image"
                 width="100"
