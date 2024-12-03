@@ -68,9 +68,9 @@ export default function Homepage() {
             <>
               <h1 className="text-2xl font-bold">{user.name}</h1>
               <h2 className="text-xl">{user.nickname}</h2>
-              <p>${user.duels}</p>
-              <p>${user.points}</p>
-              <p>${user.scrims}</p>
+              <p>{user.duels}</p>
+              <p>{user.points}</p>
+              <p>{user.scrims}</p>
             </>
           ) : (
             <h1>Cargando datos del usuario...</h1>
