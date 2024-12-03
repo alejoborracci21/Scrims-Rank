@@ -13,6 +13,7 @@ interface User {
   scrims: number;
   duels: number;
   points: number;
+  image: string;
 }
 
 export default function Homepage() {
@@ -54,26 +55,35 @@ export default function Homepage() {
     <>
       <Navbar />
       <div
-        className="flex flex-col items-center justify-center h-[150vh] w-[100%]"
+        className="flex flex-col items-center justify-center h-[100vh] w-[100%]"
         style={{
           backgroundImage: `url(${background.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="flex flex-col bg-black w-[60%] h-[70%] p-4 shadow-lg rounded-lg">
+        <div className="flex flex-col items-center justify-center bg-black w-[30%] h-[60%] p-4 shadow-lg rounded-lg">
           {error ? (
             <h1 className="text-red-500">{error}</h1>
           ) : user ? (
-            <>
-              <h1 className="text-2xl font-bold">{user.name}</h1>
-              <h2 className="text-xl">{user.nickname}</h2>
-              <p>{user.duels}</p>
-              <p>{user.points}</p>
-              <p>{user.scrims}</p>
-            </>
+            <div className="flex flex-col items-center justify-center bg-transparent">
+                <img
+                src={user.image}
+                alt="Profile image"
+                width="100"
+                height="100"
+                loading="lazy"
+                className="mb-4"
+              />
+            
+              <h1 className="text-2xl font-bold mb-10">{user.nickname}</h1>
+              <p className="text-xl">Duels won: {user.duels}</p>
+              <p className="text-xl">Scrims won: {user.scrims}</p>
+              <p className="text-xl">Points: {user.points}</p>
+              <p className="text-red-600">Pase lo que pase sos malisimo, recorda eso.</p>
+            </div>
           ) : (
-            <h1>Cargando datos del usuario...</h1>
+            <h1 className="items-center justify-center">Cargando datos del usuario...</h1>
           )}
         </div>
       </div>
