@@ -34,8 +34,7 @@ export default function Homepage() {
       const sortedUsers = data.sort((a, b) => b.points - a.points);
       setUsers(sortedUsers);
     } catch (error: unknown) {
-      if(error instanceof Error)
-      setError(error.message || "Error desconocido.");
+      if(error instanceof Error) setError(error.message || "Error desconocido.");
     } finally {
       setLoading(false);
     }
