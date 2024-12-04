@@ -29,8 +29,8 @@ export default function Homepage() {
       const id = localStorage.getItem("user");
 
       if (!id) {
-        console.error("No se encontró un usuario en el localStorage");
-        setError("No se encontró un usuario en el localStorage");
+        console.error("No se encontró un usuario");
+        setError("No se encontró un usuario");
         return;
       }
 
@@ -63,12 +63,12 @@ export default function Homepage() {
           backgroundPosition: "center",
         }}
       >
-        <div className="flex flex-col items-center justify-center bg-black w-[30%] h-[60%] p-4 shadow-lg rounded-lg">
+        <div className="flex flex-col items-center justify-center bg-zinc-800 bg-opacity-80 w-[30%] h-[60%] p-4 shadow-lg rounded-lg">
           {error ? (
             <h1 className="text-red-500">{error}</h1>
           ) : user ? (
             <div className="flex flex-col items-center justify-center bg-transparent">
-                <Image
+                <img
                 src={user.image}
                 alt="Profile image"
                 width="100"
@@ -81,7 +81,7 @@ export default function Homepage() {
               <p className="text-xl">Duels won: {user.duels}</p>
               <p className="text-xl">Scrims won: {user.scrims}</p>
               <p className="text-xl">Points: {user.points}</p>
-              <p className="text-red-600">Pase lo que pase sos malisimo, recorda eso.</p>
+              <p className="text-red-600 mt-[20%]">Pase lo que pase sos malisimo, recorda eso.</p>
             </div>
           ) : (
             <h1 className="items-center justify-center">Cargando datos del usuario...</h1>

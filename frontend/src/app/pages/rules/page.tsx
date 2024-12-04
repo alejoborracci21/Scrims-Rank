@@ -6,7 +6,7 @@ export default function Homepage() {
     <>
       <Navbar />
       <div
-        className="flex flex-col h-[150vh] w-[100%]"
+        className="flex flex-col h-[100vh] w-[100%]"
         style={{
           backgroundImage: `url(${background.src})`,
           backgroundSize: "cover",
