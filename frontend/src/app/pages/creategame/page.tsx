@@ -20,7 +20,7 @@ const getAllPlayers = async () => {
     
     return playerNicknames;
   } catch (error) {
-    alert("Failed to fetch players");
+    alert(`Failed to fetch players: ${error}`);
     return [];
   }
 };

@@ -14,19 +14,17 @@ export default function Homepage() {
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      router.push("/"); // Redirigir si no hay usuario
+      router.push("/"); 
     } else {
-      setIsLoggedIn(true); // Usuario logueado
+      setIsLoggedIn(true)
     }
-    setIsLoading(false); // Fin de la carga inicial
+    setIsLoading(false); 
   }, [router]);
 
-  // Render mientras valida login
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  // Render principal
   return (
     <>
       <Navbar />

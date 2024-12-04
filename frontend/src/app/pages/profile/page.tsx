@@ -3,7 +3,6 @@
 import Navbar from "@/app/components/navbar";
 import background from "@/../public/profile.jpg";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -51,7 +50,7 @@ export default function Homepage() {
         const userData: User = await response.json();
         setUser(userData);
       } catch (err) {
-        setError("Hubo un problema al cargar los datos del usuario.");
+        setError(`Hubo un problema al cargar los datos del usuario: ${err}`);
       }
     };
 
