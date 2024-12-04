@@ -68,7 +68,7 @@ export default function Homepage() {
             <h1 className="text-red-500">{error}</h1>
           ) : user ? (
             <div className="flex flex-col items-center justify-center bg-transparent">
-                <img
+                <Image
                 src={user.image}
                 alt="Profile image"
                 width="100"
