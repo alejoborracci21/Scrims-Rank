@@ -9,7 +9,7 @@ async function bootstrap() {
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     credentials: false, // Cambia a `true` si usas cookies
   });
-  await app.listen(3001);
+  await app.listen(process.env.DB_PORT ?? 3000);
 
 }
 bootstrap();
