@@ -38,7 +38,6 @@ const Login = () => {
 
       const data = await response.json();
       localStorage.setItem('token', data.token);
-      console.log(data)
       localStorage.setItem('user', data.id);
 
       router.push('/pages/homepage');
@@ -70,7 +69,7 @@ const Login = () => {
       }
 
       alert('Usuario registrado exitosamente');
-      setIsRegistering(false); // Regresar al formulario de login
+      setIsRegistering(false); 
     } catch (err: unknown) {
       if(err instanceof Error){
         setError(err.message || 'Error al registrar usuario');
