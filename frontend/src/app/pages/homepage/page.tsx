@@ -1,5 +1,6 @@
 import Navbar from "@/app/components/navbar";
 import background from "@/../public/homepage.webp"; // Asegúrate de que la ruta sea correcta
+import { Button } from "@mui/material";
 
 export default function Homepage() {
   return (
@@ -14,11 +15,13 @@ export default function Homepage() {
         }}
       >
         <div className="flex justify-center items-center mt-[8%] bg">
-          <div className="grid grid-cols-2 gap-24">
-            <div className=" bg-opacity-90 w-[600px] h-[300px] rounded shadow-lg bg-slate-800"></div>
-            <div className=" bg-opacity-90 w-[600px] h-[300px] rounded shadow-lg bg-slate-800"></div>
-            <div className=" bg-opacity-90 w-[600px] h-[300px] rounded shadow-lg bg-slate-800"></div>
-            <div className=" bg-opacity-90 w-[600px] h-[300px] rounded shadow-lg bg-slate-800"></div>
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col bg-opacity-90 w-[400px] h-[300px] rounded shadow-lg bg-slate-800">
+              <h1 className="font-bold text-3xl text-center mb-6">Scrim 5vs5</h1>
+              <p className="p-5">A 5v5 match where the teams are chosen by two participants who decide to compete against each other. The winners of this match will earn 1 victory scrim and 3 points. The winner is determined by the best of 3 games.</p>
+
+              <Button className="m-5" href="/pages/creategame" variant="contained">Create game</Button>
+            </div>
           </div>
         </div>
       </div>
