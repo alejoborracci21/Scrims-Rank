@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/app/components/navbar";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
-// Función para obtener los jugadores
+
 const getAllPlayers = async () => {
   try {
     const response = await fetch('https://scrims-rank.onrender.com/users');
@@ -25,6 +26,25 @@ const getAllPlayers = async () => {
 };
 
 export default function Homepage() {
+      //! Validando que el usuario este logueado
+      const router = useRouter();
+      const [isLoading, setIsLoading] = useState(true);
+    
+      useEffect(() => {
+        const user = localStorage.getItem("user");
+        if (!user) {
+          router.push("/");
+        } else {
+          setIsLoading(false); 
+        }
+      }, [router]);
+    
+      if (isLoading) {
+        return <div>Loading...</div>;
+      }
+  
+      //!-----------------------------------------------
+  
   const [team1, setTeam1] = useState(new Array(5).fill("")); // Empty array for team1
   const [team2, setTeam2] = useState(new Array(5).fill("")); // Empty array for team2
   const [matchType, setMatchType] = useState("BO1"); // Default match type

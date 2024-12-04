@@ -3,6 +3,7 @@
 import Navbar from "@/app/components/navbar";
 import { useEffect, useState } from "react";
 import background from "@/../public/Lolbg.jpg";
+import { useRouter } from "next/navigation";
 
 // Interfaz para los datos de usuario
 interface User {
@@ -12,37 +13,56 @@ interface User {
   points: number;
 }
 
-// Componente principal
 export default function Homepage() {
-  const [users, setUsers] = useState<User[]>([]); // Estado para almacenar usuarios
-  const [loading, setLoading] = useState<boolean>(true); // Estado de carga
-  const [error, setError] = useState<string | null>(null); // Estado para errores
+  const router = useRouter();
+  const [isUserVerified, setIsUserVerified] = useState(false); // Nuevo estado para verificar al usuario
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Función para obtener usuarios
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch("https://scrims-rank.onrender.com/users");
-
-      if (!response.ok) {
-        throw new Error(
-          `Error al obtener usuarios: ${response.status} ${response.statusText}`
-        );
-      }
-
-      const data: User[] = await response.json(); // Tipado de la respuesta
-      // Ordenar usuarios por puntos de mayor a menor
-      const sortedUsers = data.sort((a, b) => b.points - a.points);
-      setUsers(sortedUsers);
-    } catch (error: unknown) {
-      if(error instanceof Error) setError(error.message || "Error desconocido.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Verificar el usuario
   useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      router.push("/");
+    } else {
+      setIsUserVerified(true); // Usuario verificado
+    }
+  }, [router]);
+
+  // Obtener usuarios después de verificar al usuario
+  useEffect(() => {
+    if (!isUserVerified) return;
+
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("https://scrims-rank.onrender.com/users");
+
+        if (!response.ok) {
+          throw new Error(
+            `Error al obtener usuarios: ${response.status} ${response.statusText}`
+          );
+        }
+
+        const data: User[] = await response.json();
+
+        // Ordenar usuarios por puntos de mayor a menor
+        const sortedUsers = data.sort((a, b) => b.points - a.points);
+        setUsers(sortedUsers);
+      } catch (error: unknown) {
+        if (error instanceof Error) setError(error.message || "Error desconocido.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchUsers();
-  }, []);
+  }, [isUserVerified]);
+
+  // Mostrar mientras el usuario no está verificado
+  if (!isUserVerified) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

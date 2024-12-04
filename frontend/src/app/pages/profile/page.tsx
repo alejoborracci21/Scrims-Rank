@@ -4,8 +4,8 @@ import Navbar from "@/app/components/navbar";
 import background from "@/../public/profile.jpg";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-// Definimos la estructura del usuario, incluyendo stats como un objeto JSON
 interface User {
   id: string;
   name: string;
@@ -18,39 +18,51 @@ interface User {
 }
 
 export default function Homepage() {
-  // Estado para guardar los datos del usuario
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); 
   const [user, setUser] = useState<User | null>(null);
-  // Estado para manejar errores
-  const [error, setError] = useState<string | null>(null);
-
-  // Función para obtener los datos del usuario
-  const getStats = async (): Promise<void> => {
-    try {
-      const id = localStorage.getItem("user");
-
-      if (!id) {
-        console.error("No se encontró un usuario");
-        setError("No se encontró un usuario");
-        return;
-      }
-
-      const response = await fetch(`https://scrims-rank.onrender.com/users/${id}`);
-
-      if (!response.ok) {
-        throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
-      }
-
-      const userData: User = await response.json();
-      setUser(userData);
-    } catch (error) {
-      console.error("Error al obtener los datos del usuario:", error);
-      setError("Hubo un problema al cargar los datos del usuario.");
-    }
-  };
+  const [error, setError] = useState<string | null>(null); 
 
   useEffect(() => {
-    getStats();
-  }, []);
+    const storedUserId = localStorage.getItem("user");
+    if (!storedUserId) {
+      router.push("/"); 
+    } else {
+      setIsLoading(false); 
+    }
+  }, [router]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const storedUserId = localStorage.getItem("user");
+        if (!storedUserId) {
+          setError("No se encontró el usuario.");
+          return;
+        }
+
+        const response = await fetch(
+          `https://scrims-rank.onrender.com/users/${storedUserId}`
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const userData: User = await response.json();
+        setUser(userData);
+      } catch (err) {
+        setError("Hubo un problema al cargar los datos del usuario.");
+      }
+    };
+
+    if (!isLoading) {
+      fetchUser();
+    }
+  }, [isLoading]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -68,7 +80,7 @@ export default function Homepage() {
             <h1 className="text-red-500">{error}</h1>
           ) : user ? (
             <div className="flex flex-col items-center justify-center bg-transparent">
-                <Image
+                <img
                 src={user.image}
                 alt="Profile image"
                 width="100"

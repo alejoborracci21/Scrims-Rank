@@ -1,11 +1,9 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { Alert, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { Button } from "@mui/material";
 import Navbar from "@/app/components/navbar";
-import Error from "next/error";
-import { redirect } from "next/dist/server/api-utils";
 
 const updateMatchResults = async (winningTeam: "team1" | "team2", teamMembers: string[]) => {
   try {
@@ -37,6 +35,27 @@ const updateMatchResults = async (winningTeam: "team1" | "team2", teamMembers: s
 };
 
 export default function LaunchGame() {
+
+    //! Validando que el usuario este logueado
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      const user = localStorage.getItem("user");
+      if (!user) {
+        router.push("/");
+      } else {
+        setIsLoading(false); 
+      }
+    }, [router]);
+  
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+
+    //!-----------------------------------------------
+
+
   const [team1, setTeam1] = useState<string[]>([]);
   const [team2, setTeam2] = useState<string[]>([]);
   const [matchType, setMatchType] = useState("");
