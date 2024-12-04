@@ -133,12 +133,24 @@ export default function Homepage() {
         </table>
       </div>
 
-      <Button   onClick={() => {
-    localStorage.setItem("team1", JSON.stringify(team1));
-    localStorage.setItem("team2", JSON.stringify(team2));
-    localStorage.setItem("matchType", matchType);
-    
-  }} href="/pages/launchgame" variant="contained" className="bg-red-600 mt-auto mb-5 mx-auto">
+      <Button
+        onClick={() => {
+          const isTeam1Valid = team1.every((player) => player !== "");
+          const isTeam2Valid = team2.every((player) => player !== "");
+
+          if (!isTeam1Valid || !isTeam2Valid) {
+            return alert("Both teams must have 5 players each.");
+          }
+
+          localStorage.setItem("team1", JSON.stringify(team1));
+          localStorage.setItem("team2", JSON.stringify(team2));
+          localStorage.setItem("matchType", matchType);
+
+          window.location.href = "/pages/launchgame";
+        }}
+        variant="contained"
+        className="bg-red-600 mt-auto mb-5 mx-auto"
+      >
         Launch game
       </Button>
     </div>

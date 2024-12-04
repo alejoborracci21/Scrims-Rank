@@ -2,35 +2,30 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
+import Navbar from "@/app/components/navbar";
+import Error from "next/error";
+import { redirect } from "next/dist/server/api-utils";
 
-// Función para realizar la actualización en la base de datos
 const updateMatchResults = async (winningTeam: "team1" | "team2", teamMembers: string[]) => {
   try {
-    // Recorremos los jugadores del equipo ganador
     for (const player of teamMembers) {
-      // Buscar cada jugador por su nickname
       const response = await fetch(`https://scrims-rank.onrender.com/users?nickname=${player}`);
       if (!response.ok) {
-        throw new Error(`Failed to find player: ${player}`);
+        alert(`Failed to find player`)
       }
       const playerData = await response.json();
       
-      // Asumimos que la respuesta nos devuelve un array de jugadores, con al menos un jugador
       const playerId = playerData[0]?.id;
       
       if (playerId) {
-        // Actualizamos los datos del jugador en la base de datos
         const updateResponse = await fetch(`https://scrims-rank.onrender.com/users/${playerId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ scrimsWon: 1 }), // Aumentar los scrims ganados
+          body: JSON.stringify({ scrimsWon: 1 }),
         });
-        if (!updateResponse.ok) {
-          throw new Error(`Failed to update player ${player}`);
-        }
       }
     }
     
@@ -57,17 +52,60 @@ export default function LaunchGame() {
     if (storedMatchType) setMatchType(storedMatchType);
   }, []);
 
-  // Función que se ejecuta al elegir el equipo ganador
-  const handleMatchResult = () => {
+  const handleMatchResult = async () => {
     if (winner) {
       const teamMembers = winner === "team1" ? team1 : team2;
-      updateMatchResults(winner, teamMembers);
+      try {
+        const points = matchType === "BO1" ? 1 : matchType === "BO3" ? 3 : 5;
+  
+        // Realizar actualizaciones de todos los jugadores
+        await Promise.all(
+          teamMembers.map(async (player) => {
+            const userResponse = await fetch(`https://scrims-rank.onrender.com/users/nickname/${player}`);
+            if (!userResponse.ok) {
+              console.error(`Error finding user with nickname: ${player}`);
+              return;
+            }
+            const user = await userResponse.json();
+  
+            const updatedUser = {
+              ...user,
+              scrims: user.scrims + 1,
+              points: user.points + points,
+            };
+  
+            const updateResponse = await fetch(`https://scrims-rank.onrender.com/users/${user.id}`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(updatedUser),
+            });
+  
+            if (!updateResponse.ok) {
+              console.error(`Error updating user: ${player}`);
+            }
+          })
+        );
+  
+        // Limpiar datos específicos de localStorage
+        localStorage.removeItem("team1");
+        localStorage.removeItem("team2");
+  
+        // Redirigir a la página principal
+        window.location.href = "/pages/homepage";
+      } catch (error) {
+        console.error("Error updating match results:", error);
+        alert("There was an error updating the match results.");
+      }
     } else {
       alert("Please select a winner.");
     }
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="flex flex-col items-center justify-center h-[100vh] p-10 bg-slate-700 text-white">
       <h1 className="text-3xl font-bold mb-5">Match Results</h1>
       
@@ -112,5 +150,6 @@ export default function LaunchGame() {
         End Match
       </Button>
     </div>
+    </>
   );
 }
