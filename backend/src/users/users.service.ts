@@ -20,7 +20,7 @@ export class UsersService {
     const email = await this.userRepository.findOne({where: {email: createUserDto.email}})
     const nick = await this.userRepository.findOne({where: {nickname: createUserDto.nickname}})
 
-    if(email || nick) throw new error ("User already exist");
+    if(email || nick) throw new Error ("User already exist");
     
 
     const saltRounds = 10; // Número de rondas de sal
@@ -41,9 +41,12 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<Usuario> {
-    return await this.userRepository.findOne({ where: { id } });
+    return await this.userRepository.findOne({ where: { id } })
   }
-
+  
+  async findOneByNickname(nickname: string): Promise<Usuario | undefined> {
+    return await this.userRepository.findOne({ where: { nickname } });
+  }
   async update(id: number, updateUserDto: UpdateUserDto): Promise<Usuario> {
     await this.userRepository.update(id, updateUserDto);
     return this.findOne(id);
