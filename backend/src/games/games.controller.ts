@@ -13,7 +13,7 @@ export class GamesController {
   @Post()
   async create(@Body() createGameDto: CreateGameDto) {
     const { team1, team2 } = createGameDto;
-
+    if(team1.length < 5 || team2.length < 5) throw new Error("10 players is required")
     // Validar que todos los IDs de jugadores existan
     const allPlayers = [...team1, ...team2];
     await this.usersService.validatePlayersExist(allPlayers);
