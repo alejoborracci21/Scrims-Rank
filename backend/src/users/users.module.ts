@@ -9,5 +9,6 @@ import { Game } from 'src/games/entities/game.entity';
   imports: [TypeOrmModule.forFeature([Usuario, Game])],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService], // Exportar el servicio para usarlo en otros módulos
 })
 export class UsersModule {}

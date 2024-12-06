@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException  } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Usuario } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { error } from 'console';
+import { In } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -38,6 +38,23 @@ export class UsersService {
 
   async findAll(): Promise<Usuario[]> {
     return await this.userRepository.find();
+  }
+
+  // Método para verificar si los jugadores existen
+  async validatePlayersExist(playerIds: number[]): Promise<void> {
+    if (!Array.isArray(playerIds) || playerIds.length === 0) {
+      throw new BadRequestException('La lista de jugadores está vacía o no es válida.');
+    }
+
+    // Cuenta cuántos de los IDs existen en la base de datos
+    const existingPlayersCount = await this.userRepository.count({
+      where: { id: In(playerIds) },
+    });
+
+    // Si la cantidad de jugadores encontrados no coincide con la lista enviada, lanza un error
+    if (existingPlayersCount !== playerIds.length) {
+      throw new BadRequestException('Uno o más jugadores no existen en la base de datos.');
+    }
   }
 
   async findOne(id: number): Promise<Usuario> {
