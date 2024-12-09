@@ -5,11 +5,11 @@ export class Game {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int', { array: true })
-  team1: number[];
+  @Column( { type: 'simple-array' })
+  team1: string[];
 
-  @Column('int', { array: true })
-  team2: number[];
+  @Column({ type: 'simple-array' })
+  team2: string[];
 
   @Column()
   game_date: Date;
@@ -17,6 +17,6 @@ export class Game {
   @Column({ length: 20 })
   game_type: string;
 
-  @Column({ type: 'smallint', nullable: true, default: null })
-  winner_team: number;
+  @Column( {nullable: true, default: null } )
+  winner_team: string;
 }

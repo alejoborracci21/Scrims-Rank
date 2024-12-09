@@ -41,7 +41,7 @@ export class UsersService {
   }
 
   // Método para verificar si los jugadores existen
-  async validatePlayersExist(playerIds: number[]): Promise<void> {
+  async validatePlayersExist(playerIds: string[]): Promise<void> {
     if (!Array.isArray(playerIds) || playerIds.length === 0) {
       throw new BadRequestException('La lista de jugadores está vacía o no es válida.');
     }
