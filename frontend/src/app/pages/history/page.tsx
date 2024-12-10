@@ -43,7 +43,7 @@ export default function History() {
             try {
                 const response = await fetch("https://scrims-rank.onrender.com/games");
                 const data: Game[] = await response.json();
-                console.log(data)
+                console.log("Datos recibidos:", data); // Verifica que sea un array vacío
                 setGames(data);
             } catch (error) {
                 console.error("Error fetching games:", error);
