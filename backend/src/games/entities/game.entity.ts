@@ -18,5 +18,5 @@ export class Game {
   game_type: string;
 
   @Column( {nullable: true, default: null } )
-  winner_team: string;
+  winner: string;
 }
