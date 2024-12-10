@@ -59,8 +59,19 @@ const Navbar = () => {
         >
           Rules
         </Button>
+        <Button
+          sx={{
+            color: 'white',
+            border: 'none',
+            padding: '6px 16px',
+          }}
+          className="bg-transparent transition duration-300 ease-in-out hover:shadow-lg hover:shadow-white hover:bg-white hover:text-black"
+          onClick={() => { router.push("/pages/history") }}
+        >
+          History
+        </Button>
       </Stack>
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#000000]" />
+      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#ffffff]" />
     </div>
   );
 }

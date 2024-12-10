@@ -1,90 +1,93 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Navbar from "@/app/components/navbar";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-
 const getAllPlayers = async () => {
   try {
     const response = await fetch('https://scrims-rank.onrender.com/users');
-    
     if (!response.ok) {
       throw new Error("Failed to fetch players");
     }
-    
     const players = await response.json();
-    
-    const playerNicknames = players.map((player: { nickname: string }) => player.nickname);
-    
-    return playerNicknames;
+    return players.map((player: { nickname: string }) => player.nickname);
   } catch (error) {
-    alert(`Failed to fetch players: ${error}`);
+    console.error(`Failed to fetch players: ${error}`);
     return [];
   }
 };
 
 export default function Homepage() {
-      //! Validando que el usuario este logueado
-      const router = useRouter();
-      const [isLoading, setIsLoading] = useState(true);
-    
-      useEffect(() => {
-        const user = localStorage.getItem("user");
-        if (!user) {
-          router.push("/");
-        } else {
-          setIsLoading(false); 
-        }
-      }, [router]);
-    
-      if (isLoading) {
-        return <div>Loading...</div>;
-      }
-  
-      //!-----------------------------------------------
-  
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [team1, setTeam1] = useState(new Array(5).fill("")); // Empty array for team1
   const [team2, setTeam2] = useState(new Array(5).fill("")); // Empty array for team2
   const [matchType, setMatchType] = useState("BO1"); // Default match type
   const [availablePlayers, setAvailablePlayers] = useState<string[]>([]); // Estado para los jugadores disponibles
 
-  // UseEffect para obtener los jugadores
+  // Validar usuario logueado
+  useEffect(() => {
+    const validateUser = () => {
+      const user = localStorage.getItem("user");
+      if (!user) {
+        router.replace("/"); // Reemplazar en lugar de empujar para evitar conflictos de navegación
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    // Validación solo en el cliente
+    if (typeof window !== "undefined") {
+      validateUser();
+    }
+  }, [router]);
+
+  // Obtener jugadores disponibles
   useEffect(() => {
     const fetchPlayers = async () => {
       const players = await getAllPlayers();
       setAvailablePlayers(players);
     };
-    
+
     fetchPlayers();
-  }, []); // Solo se ejecuta una vez al montar el componente
+  }, []);
 
-  // Verifica si el jugador ya está en uno de los equipos
-  const isPlayerInAnyTeam = (player: string) => {
-    return [...team1, ...team2].includes(player);
-  };
+  const isPlayerInAnyTeam = useCallback(
+    (player: string) => {
+      return [...team1, ...team2].includes(player);
+    },
+    [team1, team2]
+  );
 
-  const handlePlayerChange = (team: 1 | 2, index: number, value: string) => {
-    if (value && isPlayerInAnyTeam(value)) {
-      alert("This player is already selected in another team.");
-      return;
-    }
+  const handlePlayerChange = useCallback(
+    (team: 1 | 2, index: number, value: string) => {
+      if (value && isPlayerInAnyTeam(value)) {
+        alert("This player is already selected in another team.");
+        return;
+      }
 
-    if (team === 1) {
-      setTeam1((prev) => {
-        const newTeam = [...prev];
-        newTeam[index] = value;
-        return newTeam;
-      });
-    } else {
-      setTeam2((prev) => {
-        const newTeam = [...prev];
-        newTeam[index] = value;
-        return newTeam;
-      });
-    }
-  };
+      if (team === 1) {
+        setTeam1((prev) => {
+          const newTeam = [...prev];
+          newTeam[index] = value;
+          return newTeam;
+        });
+      } else {
+        setTeam2((prev) => {
+          const newTeam = [...prev];
+          newTeam[index] = value;
+          return newTeam;
+        });
+      }
+    },
+    [isPlayerInAnyTeam]
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col bg-slate-700 w-[100%] h-[100vh]">
@@ -166,7 +169,7 @@ export default function Homepage() {
           localStorage.setItem("team2", JSON.stringify(team2));
           localStorage.setItem("matchType", matchType);
 
-          window.location.href = "/pages/launchgame";
+          router.push("/pages/launchgame"); // Usa router para navegar de manera controlada
         }}
         variant="contained"
         className="bg-red-600 mt-auto mb-5 mx-auto"
