@@ -1,10 +1,23 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import background from "@/../public/login.webp"; // Asegúrate de que la ruta sea correcta
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const router = useRouter()
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (user) {
+        router.push("/pages/homepage");
+      }
+    }
+  }, []);
+
+
+
   //Alternar entre login y registro
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
@@ -15,8 +28,6 @@ const Login = () => {
   const [nickname, setNickName] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  //Navegacion
-  const router = useRouter();
 
   const handleSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();

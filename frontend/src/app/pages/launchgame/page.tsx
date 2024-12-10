@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import Navbar from "@/app/components/navbar";
+
+
 // Función auxiliar para actualizar los resultados del partido
 const updatePlayerData = async (player: string, points: number) => {
   try {
@@ -41,11 +43,11 @@ export default function LaunchGame() {
   //! Validando que el usuario este logueado
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (!user) {
-      router.push("/");
-    } else {
-      setIsLoading(false); 
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (!user) {
+        router.push("/");
+      }
     }
   }, [router]);
 
@@ -54,25 +56,6 @@ export default function LaunchGame() {
   }
 
   //!-----------------------------------------------
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (!user) {
-      router.push("/");
-      return;
-    }
-
-    // Cargar datos del localStorage
-    const storedTeam1 = localStorage.getItem("team1");
-    const storedTeam2 = localStorage.getItem("team2");
-    const storedMatchType = localStorage.getItem("matchType");
-
-    if (storedTeam1) setTeam1(JSON.parse(storedTeam1));
-    if (storedTeam2) setTeam2(JSON.parse(storedTeam2));
-    if (storedMatchType) setMatchType(storedMatchType);
-
-    setIsLoading(false);
-  }, [router]);
 
   const handleMatchResult = async () => {
     console.log(winner)

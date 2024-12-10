@@ -77,11 +77,11 @@ export default function History() {
                     <table style={{ width: "100%", borderCollapse: "collapse" }}>
                         <thead>
                             <tr>
-                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Fecha</th>
-                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Tipo de Partida</th>
-                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Equipo 1</th>
-                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Equipo 2</th>
-                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Ganador</th>
+                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Date</th>
+                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Type</th>
+                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Team 1</th>
+                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Team 2</th>
+                                <th style={{ border: "1px solid #ccc", padding: "10px" }}>Winner</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,9 +102,9 @@ export default function History() {
                                     <td style={{ border: "1px solid #ccc", padding: "10px" }}>
                                         {game.winner
                                             ? game.winner === "team1"
-                                                ? "Equipo 1"
-                                                : "Equipo 2"
-                                            : "Sin definir"}
+                                                ? "Team 1"
+                                                : "Team 2"
+                                            : "Undefined"}
                                     </td>
                                 </tr>
                             ))}
