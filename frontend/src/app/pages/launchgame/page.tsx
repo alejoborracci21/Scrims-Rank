@@ -45,15 +45,24 @@ export default function LaunchGame() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
+  
       if (!user) {
         router.push("/");
+        return; // Salir para evitar seguir con la ejecución.
       }
+  
+      // Cargar datos del localStorage
+      const storedTeam1 = localStorage.getItem("team1");
+      const storedTeam2 = localStorage.getItem("team2");
+      const storedMatchType = localStorage.getItem("matchType");
+  
+      if (storedTeam1) setTeam1(JSON.parse(storedTeam1));
+      if (storedTeam2) setTeam2(JSON.parse(storedTeam2));
+      if (storedMatchType) setMatchType(storedMatchType);
+  
+      setIsLoading(false); // Todo está listo, cambiamos el estado de carga.
     }
   }, [router]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   //!-----------------------------------------------
 
