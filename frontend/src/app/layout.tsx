@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-
+import image from "@../../../public/logo.webp"
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -26,7 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Criters Ranks</title>
+        <link rel="icon"  href={image.src}/>
+        <title>Criters Rank</title>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
