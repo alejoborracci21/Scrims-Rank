@@ -3,6 +3,7 @@
 
 import Navbar from "@/app/components/navbar";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Game = {
     id: number;
@@ -16,6 +17,25 @@ type Game = {
 export default function History() {
     const [games, setGames] = useState<Game[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+
+     //! Validando que el usuario este logueado
+     const router = useRouter();
+     const [isLoading, setIsLoading] = useState(true);
+   
+     useEffect(() => {
+       const user = localStorage.getItem("user");
+       if (!user) {
+         router.push("/");
+       } else {
+         setIsLoading(false); 
+       }
+     }, [router]);
+   
+     if (isLoading) {
+       return <div>Loading...</div>;
+     }
+ 
+     //!-----------------------------------------------
 
     // Fetch de partidas al cargar la página
     useEffect(() => {

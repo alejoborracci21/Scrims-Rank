@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import Navbar from "@/app/components/navbar";
-
 // Función auxiliar para actualizar los resultados del partido
 const updatePlayerData = async (player: string, points: number) => {
   try {
@@ -38,6 +37,23 @@ export default function LaunchGame() {
   const [team2, setTeam2] = useState<string[]>([]);
   const [matchType, setMatchType] = useState("");
   const [winner, setWinner] = useState<"team1" | "team2" | "">("");
+
+  //! Validando que el usuario este logueado
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      router.push("/");
+    } else {
+      setIsLoading(false); 
+    }
+  }, [router]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  //!-----------------------------------------------
 
   useEffect(() => {
     const user = localStorage.getItem("user");
