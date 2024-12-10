@@ -63,6 +63,13 @@ export default function LaunchGame() {
       alert("Please select a winner.");
       return
     }
+    localStorage.removeItem("team1")
+    localStorage.removeItem("team2")
+    localStorage.removeItem("matchType")
+    localStorage.removeItem("winner")
+
+
+
 
     const teamMembers = winner === "team1" ? team1 : team2;
     const points = matchType === "BO1" ? 1 : matchType === "BO3" ? 3 : 5;

@@ -23,6 +23,7 @@ export default function History() {
     // Validar si el usuario está logueado
     useEffect(() => {
         const user = localStorage.getItem("user");
+        
         if (!user) {
             router.push("/");
         } else {
